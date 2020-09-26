@@ -5,26 +5,39 @@ import os
 import numpy as np
 import traceback
 import pandas as pd
+from fake_news_detection import FakeNewsDetector
+
 
 # App definition
 app = Flask(__name__)
-fake_detection = FakeDetection()
 
+fake_news_detector = FakeNewsDetector(model_path='model/finetuned_BERT_epoch_2.pt')
 
-def get_predictions(text):
-    return stance, article
-
+#check krne ke liye
+# a = 'Says his budget provides the highest state funding level in history for education.'
+# b = "LeMieux didn't compare Rubio and Obama on an issue such as those listed at the start of the ad -- he said they both used a familiar campaign tactic, throwing bombs about something they didn't have to vote on themselves. The ad provides no explanation for how he compared the two politicians and neglects to note that LeMieux supported Rubio's campaign once Crist left the GOP."
+#        # get the predicted stance and the source
+# prediction, sconfidence = fake_news_detector.verifyClaim(a,b)
+# print("prediction: ", prediction)
+# print("confidence: ", confidence) 
 
 @app.route('/predict', methods=['POST'])
 def predict():
    try:
        json_ = request.json
-       prediction, source = fake_detection.get_predictions(json_['news'])      
+       claim = json_['news']
+       reference = None #@Rushi ka function se source aega
+       
+       # get the predicted stance and the source
+       prediction, confidence= fake_news_detector.verifyClaim(a,b)
+       print("prediction: ", prediction)
+       print("confidence: ", confidence)      
        return jsonify({
            "prediction":str(prediction),
-           "source":str(source),
+           "source":str(reference),
        })     
    except:
+       print("error")
        return jsonify({
            "trace": traceback.format_exc()
            })
