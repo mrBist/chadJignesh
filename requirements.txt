@@ -4,7 +4,6 @@ elasticsearch
 tqdm
 pandas
 numpy
-torch.nn
 transformers
 uwsgi
 psycopg2
