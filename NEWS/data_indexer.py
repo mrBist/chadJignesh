@@ -18,7 +18,7 @@ def cleanhtml(raw_html):
 def preprocess_text(string):
     string = cleanhtml(string)
     string = string.replace("\xa0","")
-
+    return string
 
 if __name__ == "__main__":
     es = Elasticsearch(hosts= [ES_HOST])

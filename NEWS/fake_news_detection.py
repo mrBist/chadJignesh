@@ -5,18 +5,6 @@ import numpy as np
 from transformers import BertTokenizer,BertModel
 
 
-class BERTModel(nn.Module):
-  
-  def __init__(self):
-    super(BERTModel,self).__init__()
-    self.bert = BertModel.from_pretrained("bert-base-uncased")
-    self.dropout = nn.Dropout(0.2)
-    self.out = nn.Linear(768,6)
-  
-  def forward(self,ids,mask,token_type_ids):
-    _, o2 = self.bert(ids, attention_mask=mask,token_type_ids=token_type_ids)
-    bo = self.dropout(o2)
-    return self.out(bo)
 
 class FakeNewsDetector():
     
@@ -78,3 +66,15 @@ class FakeNewsDetector():
         return classes, confidence_scores
 
 
+class BERTModel(nn.Module):
+  
+  def __init__(self):
+    super(BERTModel,self).__init__()
+    self.bert = BertModel.from_pretrained("bert-base-uncased")
+    self.dropout = nn.Dropout(0.2)
+    self.out = nn.Linear(768,6)
+  
+  def forward(self,ids,mask,token_type_ids):
+    _, o2 = self.bert(ids, attention_mask=mask,token_type_ids=token_type_ids)
+    bo = self.dropout(o2)
+    return self.out(bo)

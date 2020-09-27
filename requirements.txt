@@ -7,3 +7,5 @@ numpy
 transformers
 uwsgi
 psycopg2
+flask-ngrok
+spacy

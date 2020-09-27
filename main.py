@@ -2,38 +2,37 @@ import flask
 from flask import render_template, request, jsonify
 from flask import Flask
 import flask
+# from flask_ngrok import run_with_ngrok
+
 import os
 import traceback
-from fake_news_detection import FakeNewsDetector
-
+from NEWS.fake_news_detection import FakeNewsDetector
+from NEWS.solver import Solver
 
 # App definition
 app = Flask(__name__)
+# run_with_ngrok(app)
+model_path = 'model/finetuned_BERT_epoch_5.pt'
+fake_news_detector = FakeNewsDetector(model_path=model_path)
 
-fake_news_detector = FakeNewsDetector(model_path='model/finetuned_BERT_epoch_2.pt')
-
-#check krne ke liye
-# a = 'Says his budget provides the highest state funding level in history for education.'
-# b = "LeMieux didn't compare Rubio and Obama on an issue such as those listed at the start of the ad -- he said they both used a familiar campaign tactic, throwing bombs about something they didn't have to vote on themselves. The ad provides no explanation for how he compared the two politicians and neglects to note that LeMieux supported Rubio's campaign once Crist left the GOP."
-#        # get the predicted stance and the source
-# prediction, sconfidence = fake_news_detector.verifyClaim(a,b)
-# print("prediction: ", prediction)
-# print("confidence: ", confidence) 
 
 @app.route('/predict', methods=['POST'])
 def predict():
    try:
        claim = request.json["news"]
-       reference = None #@Rushi ka function se source aega
        print(claim)
+       
        # get the predicted stance and the source
-       prediction, confidence= fake_news_detector.verifyClaim(claim=claim,reference=reference)
-       print("prediction: ", prediction)
-       print("confidence: ", confidence)      
+       try:
+        (prediction, source) = Solver(claim, fake_news_detector)
+       except:
+           print("in error")
+           prediction = "unrelated"
+           source = "The question is unrelated to any new article we currently have"      
        
        return jsonify({
-           "prediction":str(prediction),
-           "source":str(reference),
+           "prediction": str(prediction),
+           "source": str(source),
        })     
        
    except:
@@ -46,3 +45,4 @@ def predict():
 
 if __name__ == "__main__":
    app.run('0.0.0.0', os.environ.get('PORT', 5000), debug=True)
+    # app.run()

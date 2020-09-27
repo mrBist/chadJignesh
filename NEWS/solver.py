@@ -1,7 +1,7 @@
 import numpy as np
 from elasticsearch import Elasticsearch
-from data_indexer import INDEX_NAME,ES_HOST
-from fake_news_detection import FakeNewsDetector
+from NEWS.data_indexer import INDEX_NAME,ES_HOST
+from NEWS.fake_news_detection import FakeNewsDetector
 import json
 from spacy.lang.en import English
 
@@ -99,7 +99,7 @@ def Solver(claim: str, model_instance : FakeNewsDetector):
     discuss_count = 0 
 
     for chunk in chunks:
-        Class , Confidence = solve_window(model = model_instance,claim= claim,justification= chunk)
+        Class , Confidence = solve_window(model_instance = model_instance,claim= claim,justification= chunk)
         print(Class)
         if(Class == "agree" or Class == "disagree"):
             return (Class , chunk)
