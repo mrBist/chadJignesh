@@ -1,10 +1,9 @@
 from flask import render_template, request, jsonify
 from flask import Flask
 import flask
+
 import os
-import numpy as np
 import traceback
-import pandas as pd
 from fake_news_detection import FakeNewsDetector
 
 
@@ -24,18 +23,19 @@ fake_news_detector = FakeNewsDetector(model_path='model/finetuned_BERT_epoch_2.p
 @app.route('/predict', methods=['POST'])
 def predict():
    try:
-       json_ = request.json
-       claim = json_['news']
+       claim = request.json["news"]
        reference = None #@Rushi ka function se source aega
-       
+       print(claim)
        # get the predicted stance and the source
        prediction, confidence= fake_news_detector.verifyClaim(claim=claim,reference=reference)
        print("prediction: ", prediction)
        print("confidence: ", confidence)      
+       
        return jsonify({
            "prediction":str(prediction),
            "source":str(reference),
        })     
+       
    except:
        print("error")
        return jsonify({
