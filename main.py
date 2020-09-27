@@ -19,14 +19,15 @@ fake_news_detector = FakeNewsDetector(model_path=model_path)
 @app.route('/predict', methods=['POST'])
 def predict():
    try:
-       claim = request.json["news"]
+       claim = request.form['news']
+    #    claim = data['news']
        print(claim)
        
        # get the predicted stance and the source
        try:
         (prediction, source) = Solver(claim, fake_news_detector)
-       except:
-           print("in error")
+       except Exception as e:
+           print("None returned: ", e)
            prediction = "unrelated"
            source = "The question is unrelated to any new article we currently have"      
        
@@ -35,8 +36,8 @@ def predict():
            "source": str(source),
        })     
        
-   except:
-       print("error")
+   except Exception as e:
+       print("error: ", e)
        return jsonify({
            "trace": traceback.format_exc()
            })
