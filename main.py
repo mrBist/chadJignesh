@@ -1,7 +1,7 @@
+import flask
 from flask import render_template, request, jsonify
 from flask import Flask
 import flask
-
 import os
 import traceback
 from fake_news_detection import FakeNewsDetector
