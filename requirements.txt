@@ -1,11 +1,12 @@
-Flask
-http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-linux_x86_64.whl
+flask
+#http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-linux_x86_64.whl
 elasticsearch
 tqdm
+regex
 pandas
 numpy
 transformers
-uwsgi
-psycopg2
 flask-ngrok
 spacy
+opencv-python
+pytesseract
