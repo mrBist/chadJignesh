@@ -15,9 +15,8 @@ class FakeNewsDetector():
         print("loading model")
         self.model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
         print("model loaded")
-        self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', 
-                                            do_lower_case=True)
-        
+        self.tokenizer = BertTokenizer.from_pretrained('sentence-transformers/bert-base-nli-cls-token'
+                                            ) 
         self.labels = {0:'disagree', 1:'agree', 2:'discuss', 3:'unrelated'}
         self.num_classes = len(self.labels)
         self.max_len = 512
@@ -70,9 +69,10 @@ class BERTModel(nn.Module):
   
   def __init__(self):
     super(BERTModel,self).__init__()
-    self.bert = BertModel.from_pretrained("bert-base-uncased")
+    self.num_classes = 4
+    self.bert = BertModel.from_pretrained('sentence-transformers/bert-base-nli-cls-token')
     self.dropout = nn.Dropout(0.2)
-    self.out = nn.Linear(768,6)
+    self.out = nn.Linear(768,self.num_classes)
   
   def forward(self,ids,mask,token_type_ids):
     _, o2 = self.bert(ids, attention_mask=mask,token_type_ids=token_type_ids)

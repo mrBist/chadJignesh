@@ -14,7 +14,7 @@ from NEWS.solver import Solver
 # App definition
 app = Flask(__name__)
 # run_with_ngrok(app)
-model_path = 'model/finetuned_BERT_epoch_5.pt'
+model_path = 'model/finetuned_SNLIBERT_epoch_1.pt' 
 fake_news_detector = FakeNewsDetector(model_path=model_path)
 
 
@@ -23,7 +23,7 @@ def predict_text():
     try:
         claim = request.form['news']
         print(claim)
-        get_predicted_stance(claim=claim)     
+        return  get_predicted_stance(claim=claim)     
     except Exception as e:
         print("error: ", e)
         return jsonify({
@@ -39,7 +39,8 @@ def predict_image():
         img = cv2.imdecode(img, cv2.IMREAD_COLOR)
         img = process_image(img)
         claim = image_to_text(img=img)
-        get_predicted_stance(claim=claim)
+        print(claim)
+        return  get_predicted_stance(claim=claim)
     except Exception as e:
         print("error: ", e)
         return jsonify({
@@ -48,7 +49,7 @@ def predict_image():
 
 def process_image(img):
     # TODO add path
-    pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
+    pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
     scale_percent = 140 # percent of original size
     width = int(img.shape[1] * scale_percent / 100)
