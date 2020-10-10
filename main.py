@@ -9,6 +9,8 @@ import urllib.request
 import pytesseract
 import numpy as np
 import traceback
+import requests
+import speech_recognition as sr
 from NEWS.fake_news_detection import FakeNewsDetector
 from NEWS.solver import Solver
 
@@ -57,7 +59,27 @@ def predict_audio():
     try:
         print(request.form)
         file = request.form['file']
-        resp = urllib.request.urlopen(file)
+        download(url, './speech.wav')
+        claim = transcribe(audio_path)
+        print(claim)
+        return get_predicted_stance(claim=claim)
+    except Exception as e:
+        print("error: ", e)
+        return jsonify({
+            "trace": traceback.format_exc()
+            })
+
+def download(url, path):
+    response = requests.get(url)     
+    with open(path, 'wb') as file:   
+        file.write(response.content) 
+
+def transcribe(path):
+    r = sr.Recognizer()
+    with sr.AudioFile(path) as source:
+        audio_text = r.record(source)
+        text = r.recognize_google(audio_text)
+    return text
 
 def process_image(img):
     # TODO add path
