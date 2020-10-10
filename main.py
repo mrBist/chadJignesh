@@ -116,7 +116,7 @@ def get_predicted_stance(claim):
     # get the predicted stance and the source
     try:
         try:
-         (prediction, source) = Solver(claim, fake_news_detector)
+         (prediction, confidence, articles) = Solver(claim, fake_news_detector)
         except Exception as e:
             print("None returned: ", e)
             prediction = "unrelated"
@@ -125,6 +125,7 @@ def get_predicted_stance(claim):
         return jsonify({
             "prediction": str(prediction),
             "source": str(source),
+	    "confidence":str(confidence)
         })
     except:
         print("error: ", e)
