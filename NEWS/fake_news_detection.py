@@ -69,7 +69,7 @@ class BERTModel(nn.Module):
   
   def __init__(self):
     super(BERTModel,self).__init__()
-    self.num_classes = 4
+    self.num_classes = 6
     self.bert = BertModel.from_pretrained('sentence-transformers/bert-base-nli-cls-token')
     self.dropout = nn.Dropout(0.2)
     self.out = nn.Linear(768,self.num_classes)

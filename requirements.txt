@@ -1,3 +1,5 @@
+flask
+elasticsearch
 transformers==2.10.0
 flask-ngrok
 spacy
