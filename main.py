@@ -15,7 +15,7 @@ from NEWS.solver import Solver
 # App definition
 app = Flask(__name__)
 # run_with_ngrok(app)
-model_path = 'model/finetuned_SNLIBERT_epoch_1.pt' 
+model_path = 'finetuned_BERT_epoch_5.pt' 
 fake_news_detector = FakeNewsDetector(model_path=model_path)
 
 
@@ -116,7 +116,7 @@ def get_predicted_stance(claim):
     # get the predicted stance and the source
     try:
         try:
-         (prediction, confidence, articles) = Solver(claim, fake_news_detector)
+         (prediction, sources) = Solver(claim, fake_news_detector)
         except Exception as e:
             print("None returned: ", e)
             prediction = "unrelated"
@@ -124,8 +124,7 @@ def get_predicted_stance(claim):
 
         return jsonify({
             "prediction": str(prediction),
-            "source": str(source),
-	    "confidence":str(confidence)
+            "source": str(source)
         })
     except:
         print("error: ", e)
