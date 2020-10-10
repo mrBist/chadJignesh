@@ -52,6 +52,13 @@ def predict_image():
             "trace": traceback.format_exc()
             })
 
+@app.route('/predict-audio', methods=['POST'])
+def predict_audio():
+    try:
+        print(request.form)
+        file = request.form['file']
+        resp = urllib.request.urlopen(file)
+
 def process_image(img):
     # TODO add path
     pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'

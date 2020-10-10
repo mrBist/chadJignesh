@@ -17,9 +17,6 @@ def solve_window(model_instance, claim : str, justification : str):
     return Class , Confidence
 
 
-    
-
-
 def make_windows(text : str):
     doc = nlp(text)
     sentences = [sent.string.strip() for sent in doc.sents]
