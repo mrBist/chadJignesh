@@ -148,7 +148,7 @@ def get_predicted_stance(claim):
             "prediction": str(prediction),
             "source": str(source)
         })
-    except:
+    except Exception as e:
         print("error: ", e)
         return jsonify({
            "trace": traceback.format_exc()
