@@ -5,6 +5,7 @@ from flask import Flask
 import os
 import re
 import cv2
+import urllib.request
 import pytesseract
 import numpy as np
 import traceback
@@ -34,8 +35,12 @@ def predict_text():
 @app.route('/predict-image', methods=['POST'])
 def predict_image():
     try:
-        file = request.files['file']
-        img = np.fromfile(file, np.uint8)
+        print(request.form)
+        file = request.form['file']
+        #file = request.json['file']
+        resp = urllib.request.urlopen(file)
+        img = np.asarray(bytearray(resp.read()), dtype="uint8")
+        #img = np.fromfile(file, np.uint8)
         img = cv2.imdecode(img, cv2.IMREAD_COLOR)
         img = process_image(img)
         claim = image_to_text(img=img)
